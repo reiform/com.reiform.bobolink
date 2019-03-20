@@ -5,7 +5,7 @@ import java.util.Stack;
 
 import com.reiform.bobolink.debug.SyntaxErrorException;
 
-public class ParenChecker {
+public class ParenUtils {
 	private static final char L_PAREN = '(';
 	private static final char R_PAREN = ')';
 	private static final char L_BRACE = '[';
@@ -56,5 +56,34 @@ public class ParenChecker {
 		
 		//parentheses not closed
 		throw new SyntaxErrorException(lines.size(), "Unbalanced parentheses");
+	}
+	
+	public static ArrayList<BLRawTLBlob> load_top_level_blobs(String line) {
+		ArrayList<BLRawTLBlob> top_level_ns_blobs = new ArrayList<BLRawTLBlob>();
+		Stack<Character> blob_parens = new Stack<Character>();
+		
+		String blob = "";  
+		
+		for (int i=0; i < line.length(); i++) {
+			
+			char current = line.charAt(i);
+			
+			if (current == L_PAREN) {
+				blob_parens.push(current);
+				
+			} else {
+				if (current == R_PAREN) {		
+					blob_parens.pop();	
+				}
+			}
+			blob += current;
+			
+			if (blob_parens.isEmpty()) {
+				top_level_ns_blobs.add(new BLRawTLBlob(blob));
+				blob = "";
+				
+			}	
+		}
+		return top_level_ns_blobs;
 	}
 }

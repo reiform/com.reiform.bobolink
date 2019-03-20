@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import com.reiform.bobolink.debug.BLFileNotFoundException;
+
 public class BLFileLoader {
 	private String path;
 	
